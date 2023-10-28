@@ -24,23 +24,14 @@
 
 #define tot_sens 8
 static WbDeviceTag distance_sensors[tot_sens];
-static const char *distance_sensors_names[tot_sens] = {"ps0", "ps1", "ps2", "ps3", "ps4", "ps5", "ps6", "ps7"};
 static WbDeviceTag left_motor, right_motor;
 
 #define thresh 120
 
-/* angular speed of bot in rad/s */
 #define MAX_SPEED 6.28
 
-/* angular speed in degrees */
 #define ang_speed_deg 283.588111888
 
-/*
- * This is the main program.
- * The arguments of the main function can be specified by the
- * "controllerArgs" field of the Robot node
- */
- 
 bool * get_sensors_condition()
 {
   static bool sensors_condition[tot_sens] = {false};
@@ -56,14 +47,6 @@ bool * get_sensors_condition()
     }
   }
   return sensors_condition;
-}
-
-void print_sensor_values() {
-  printf("%s sensor values: ", wb_robot_get_name());
-  for (int i = 0; i < tot_sens ; i++) {
-    printf("%d:%.3f ", i, wb_distance_sensor_get_value(distance_sensors[i]));
-  }
-  printf("\n");
 }
 
 /* Stop the robot */
@@ -140,7 +123,6 @@ static void init_robot() {
   }
 }
 
-
 int main(int argc, char **argv) {
   init_robot();
 
@@ -157,8 +139,6 @@ int main(int argc, char **argv) {
    */
   while (wb_robot_step(TIME_STEP) != -1) {
   
-    // print_sensor_values();
-		
     bool *is_sensors_active = get_sensors_condition();
 		
     if (is_sensors_active[1] && is_sensors_active[6]) {
@@ -173,18 +153,6 @@ int main(int argc, char **argv) {
     } else {
       motor_move_forward();
     }
-    /*
-     * Read the sensors :
-     * Enter here functions to read sensor data, like:
-     *  double val = wb_distance_sensor_get_value(my_sensor);
-     */
-
-    /* Process sensor data here */
-
-    /*
-     * Enter here functions to send actuator commands, like:
-     * wb_motor_set_position(my_actuator, 10.0);
-     */
   };
 
   /* Enter your cleanup code here */
